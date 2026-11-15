@@ -1,0 +1,39 @@
+const int MA1 = 5, MA2 = 6, MB1 = 9, MB2 = 10;
+
+const unsigned long TURN_90  = 4000;
+const unsigned long TURN_135 = 6000;
+const unsigned long STRAIGHT_TIME[5] = {3000, 2000, 2000, 2000, 2000};
+
+void setMotors(int a1, int a2, int b1, int b2) {
+  digitalWrite(MA1, a1); digitalWrite(MA2, a2);
+  digitalWrite(MB1, b1); digitalWrite(MB2, b2);
+}
+
+void straightFor(unsigned long ms) {
+  setMotors(LOW, HIGH, LOW, HIGH); delay(ms);
+  setMotors(LOW, LOW, LOW, LOW);   delay(300);
+}
+
+void leftFor(unsigned long ms) {
+  setMotors(HIGH, LOW, LOW, HIGH); delay(ms);
+  setMotors(LOW, LOW, LOW, LOW);   delay(300);
+}
+
+void setup() {
+  pinMode(MA1, OUTPUT); pinMode(MA2, OUTPUT);
+  pinMode(MB1, OUTPUT); pinMode(MB2, OUTPUT);
+  setMotors(LOW, LOW, LOW, LOW);
+  delay(1000);
+
+  for (int i = 0; i < 4; i++) {
+    straightFor(STRAIGHT_TIME[i]);
+    if (i == 0) leftFor(TURN_135);
+    else        leftFor(TURN_90);
+  }
+
+  straightFor(STRAIGHT_TIME[4]);
+  setMotors(LOW, LOW, LOW, LOW);
+}
+
+void loop() {
+}
